@@ -1091,8 +1091,8 @@ private:
     boost::signals2::connection  m_fleet_connection;
 
     GG::Control*        m_fleet_icon;
-    CUILabel*           m_fleet_name_text;
-    CUILabel*           m_fleet_destination_text;
+    GG::Label*          m_fleet_name_text;
+    GG::Label*          m_fleet_destination_text;
     GG::Button*         m_aggression_toggle;
     GG::StaticGraphic*  m_gift_indicator;
     ScanlineControl*    m_scanline_control;
@@ -1458,11 +1458,11 @@ void FleetDataPanel::SetStatIconValues() {
     const std::set<int>& this_client_known_destroyed_objects = GetUniverse().EmpireKnownDestroyedObjectIDs(client_empire_id);
     const std::set<int>& this_client_stale_object_info = GetUniverse().EmpireStaleKnowledgeObjectIDs(client_empire_id);
     int ship_count =        0;
-    float damage_tally =    0.0;
-    float structure_tally = 0.0;
-    float shield_tally =    0.0;
-    float min_fuel =        0;
-    float min_speed =       0;
+    float damage_tally =    0.0f;
+    float structure_tally = 0.0f;
+    float shield_tally =    0.0f;
+    float min_fuel =        0.0f;
+    float min_speed =       0.0f;
     std::vector<float> fuels;
     std::vector<float> speeds;
 

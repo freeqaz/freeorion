@@ -1190,13 +1190,13 @@ void Empire::Init() {
     m_resource_pools[RE_INDUSTRY] = boost::shared_ptr<ResourcePool>(new ResourcePool(RE_INDUSTRY));
     m_resource_pools[RE_TRADE] =    boost::shared_ptr<ResourcePool>(new ResourcePool(RE_TRADE));
 
-    // Add alignment meters to empire
-    const AlignmentManager& alignment_manager = GetAlignmentManager();
-    const std::vector<Alignment>& alignments = alignment_manager.Alignments();
-    for (std::vector<Alignment>::const_iterator it = alignments.begin(); it != alignments.end(); ++it) {
-        const Alignment& alignment = *it;
-        m_meters[alignment.Name()];
-    }
+    //// Add alignment meters to empire
+    //const AlignmentManager& alignment_manager = GetAlignmentManager();
+    //const std::vector<Alignment>& alignments = alignment_manager.Alignments();
+    //for (std::vector<Alignment>::const_iterator it = alignments.begin(); it != alignments.end(); ++it) {
+    //    const Alignment& alignment = *it;
+    //    m_meters[alignment.Name()];
+    //}
 
     m_meters[UserStringNop("METER_DETECTION_STRENGTH")];
 }
@@ -1903,6 +1903,12 @@ void Empire::UpdateSupply(const std::map<int, std::set<int> >& starlanes) {
 
         // add system to list of systems to popegate supply from
         propegating_systems_list.push_back(it->first);
+
+        // Currently, only supply sources whose meter is above zero provide any fleet supply, and this
+        // is handled by the propegating_systems_list loop below. If it becomes intended that a supply 
+        // source with supply meter at zero could still provide fleet supply at its own system, 
+        // then uncomment the following line
+        //m_fleet_supplyable_system_ids.insert(it->first);
     }
 
 

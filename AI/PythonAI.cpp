@@ -38,6 +38,7 @@ using boost::python::import;
 using boost::python::error_already_set;
 using boost::python::exec;
 using boost::python::dict;
+using boost::python::list;
 using boost::python::extract;
 
 
@@ -76,6 +77,15 @@ namespace {
             parts.push_back(boost::python::extract<std::string>(partsList[i]));
         int result = AIInterface::IssueCreateShipDesignOrder(name, description, hull, parts, icon, model, nameDescInStringTable);
         return result;
+    }
+
+    boost::python::list GetUserStringList(const std::string& list_key) {
+        std::list<std::string> retval;
+        UserStringList(list_key, retval);
+        boost::python::list ret_list;
+        for (std::list< std::string >::iterator it = retval.begin(); it != retval.end(); it++)
+            ret_list.append(*it);
+        return ret_list;
     }
 }
 
@@ -162,7 +172,9 @@ BOOST_PYTHON_MODULE(freeOrionAIInterface)
     def("getSaveStateString",       GetStaticSaveStateString,       return_value_policy<copy_const_reference>());
 
     def("doneTurn",                 AIInterface::DoneTurn);
-    def("userString",               make_function(&UserString,      return_value_policy<copy_const_reference>()));
+    def("userString",               make_function(&UserString,          return_value_policy<copy_const_reference>()));
+    def("userStringExists",         make_function(&UserStringExists,    return_value_policy<return_by_value>()));
+    def("userStringList",           &GetUserStringList);
 
     def("getGalaxySetupData",       AIInterface::GetGalaxySetupData,    return_value_policy<copy_const_reference>());
 
@@ -212,10 +224,9 @@ BOOST_PYTHON_MODULE(freeOrionAIInterface)
 static dict         s_main_namespace = dict();
 static object       s_ai_module = object();
 static PythonAI*    s_ai = 0;
-#ifdef FREEORION_MACOSX
-#include <sys/param.h>
-static char         s_python_home[MAXPATHLEN];
-static char         s_python_program_name[MAXPATHLEN];
+#if defined(FREEORION_MACOSX) || defined(FREEORION_WIN32)
+static char         s_python_home[1024];
+static char         s_python_program_name[1024];
 #endif
 PythonAI::PythonAI() {
     DebugLogger() << "PythonAI::PythonAI()";
@@ -228,11 +239,15 @@ PythonAI::PythonAI() {
     s_ai = this;
 
     try {
-#ifdef FREEORION_MACOSX
+#if defined(FREEORION_MACOSX) || defined(FREEORION_WIN32)
+        // There have been recurring issues on Windows and OSX to get FO to use the
+        // Python framework shipped with the app (instead of falling back on the ones
+        // provided by the system). These API calls have been added in an attempt to
+        // solve the problems. Not sure if they are really required, but better save
+        // than sorry... ;)
         strcpy(s_python_home, GetPythonHome().string().c_str());
         Py_SetPythonHome(s_python_home);
         DebugLogger() << "Python home set to " << Py_GetPythonHome();
-
         strcpy(s_python_program_name, (GetPythonHome() / "Python").string().c_str());
         Py_SetProgramName(s_python_program_name);
         DebugLogger() << "Python program name set to " << Py_GetProgramFullPath();

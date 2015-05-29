@@ -137,8 +137,11 @@ Fleet
 # used to generate name for effect-created planets, when no name = (string) is specified.
 # For this, and any other effect-created object, with specified or default strings for the name,
 # and when each exists: %1% is the system name, %2% is the target object name, and %3% is the source object name
+NEW_ASTEROIDS_NAME
+%1% %3% remnants
+
 NEW_PLANET_NAME
-%1% Unnamed Planet
+%1% I
 
 EMPTY_SPACE
 Deep Space
@@ -660,9 +663,11 @@ SM_ACIREMA_GUARD_DESC
 An unmanned armed ship, built by the Acirema, guards the system.
 
 SM_EXP_OUTPOST
-Experimentor Outpost Ship
+Experiment Zero
 SM_EXP_OUTPOST_DESC
-An outpost ship constructed by the Experimentors to transport experimental equipment between galaxies.
+'''An ancient creation of the Experimentors that reduces shields and damage. 
+
+Experiment Zero was sent to this galaxy to guard the outpost of the Experimentors with its unique abilities. While it does not attack directly it consists of quadrillions of diminutive units that fill the whole space of the system and hamper enemy shields and weapons to the point that all but the very best equipment will be ineffective.'''
 
 SM_COSMIC_DRAGON
 Cosmic Dragon
@@ -1304,6 +1309,9 @@ Toggles inclusion of auto-generated text in tech, building or ship part descript
 
 OPTIONS_DB_VERBOSE_LOGGING_DESC
 Toggles verbose logging of universe contents and effect evaluation.
+
+OPTIONS_DB_VERBOSE_COMBAT_LOGGING_DESC
+Toggles verbose logging of combat resolution information.
 
 OPTIONS_DB_VERBOSE_SITREP_DESC
 Toggles inclusion of situation report messages with errors.
@@ -2237,6 +2245,12 @@ MAP_SCALE_INDICATOR
 
 MAP_BTN_MENU
 Menu
+
+MAP_BTN_AUTO_ADVANCE_ENABLED
+Automatic Turn Advance
+
+MAP_BTN_MANUAL_TURN_ADVANCE
+Manual Turn Advance
 
 MAP_BTN_MODERATOR
 Moderator
@@ -3258,7 +3272,7 @@ ENC_SHIP
 [Game - Ships]
 
 ENC_MONSTER
-Monster
+[Game - Monster]
 
 ENC_MONSTER_TYPE
 Monster Types
@@ -3628,7 +3642,7 @@ A planet focused on Growth increases the max Population only of other planets co
 
 A Homeworld focused on Growth only helps other planets of the same species.
 
-Growth Special planets focused on growth, only help a single classification of species. Some specials function for organic species only, some for lithic species only, and some for robotic species only.'''
+[[GROWTH_SPECIALS_ENTRY_LIST]]'''
 
 MINING_FOCUS_TITLE
 Mining Focus
@@ -3766,14 +3780,18 @@ Xenophobic species start with [[tech CON_CONC_CAMP]].'''
 FUEL_TITLE
 Fuel
 FUEL_TEXT
-Fuel allows ships to travel the star-lanes. When entering a star-lane a ship consumes 1 unit of fuel. Fuel is not used up at any other time. [[encyclopedia SUPPLY_TITLE]] lines will fully refuel a ship. If a ship travels beyond friendly supply lines, fuel will slowly regenerate when the ship is outside of the star-lanes.
+Fuel allows ships to travel the star-lanes. When entering a star-lane a ship consumes 1 unit of fuel unless that lane is within supply of the empire, fuel is not used up at any other time. Stopping within[[encyclopedia SUPPLY_TITLE]] lines will fully refuel a ship. If a ship travels beyond friendly supply lines, fuel will slowly regenerate when the ship is outside of the star-lanes.
 
 SUPPLY_TITLE
 Supply
 SUPPLY_TEXT
-'''Supply lines are shown by coloring star-lanes with an empire's color. Planets connected by supply lines can share physical resources -- production created on one planet, can be used on any connected planet to build ships or structures. A set of systems with supply connections between them are called a 'Resource Group'.  Supply lines can also be used to refill the [[encyclopedia FUEL_TITLE]] supply of ships.  A set of core supply starlanes for an empire (the set of least-jump starlanes connecting the resource-producing systems of each Resource Group) will have greater thickness than the non-core starlanes.  If PP is currently being wasted within the Resource Group the outer bands of the core starlanes will be a contrasting color.
+'''The supply meter on a planet represents the number of star-lanes supply can extend through. Smaller planets can supply greater distances, large planets reduced distances.
 
-The supply meter on a planet represents the number of star-lanes supply can reach.'''
+Supply lines are shown by coloring star-lanes with an empire's color. Planets connected by supply lines form a 'Resource Group' and can share physical resources. Production Points created on one planet can be used on any connected planet to build ships or structures. 
+
+A set of core supply starlanes for an empire (the set of least-jump starlanes connecting the resource-producing systems of each Resource Group) will have greater thickness than the non-core starlanes.  If PP is currently being wasted within a Resource Group the outer bands of the core starlanes will be a contrasting color.
+
+Supply lines can also be used to refill the [[encyclopedia FUEL_TITLE]] supply of ships.'''
 
 FLEET_UPKEEP_TITLE
 Fleet Upkeep
@@ -4181,6 +4199,8 @@ SITREP_TECH_UNLOCKED
 SITREP_SHIP_PART_UNLOCKED
 SITREP_SHIP_HULL_UNLOCKED
 SITREP_BUILDING_TYPE_UNLOCKED
+SITREP_GROUND_BATTLE
+SITREP_GROUND_BATTLE_ENEMY
 SITREP_PLANET_CAPTURED
 SITREP_PLANET_COLONIZED
 SITREP_NEW_COLONY_ESTABLISHED
@@ -4319,7 +4339,7 @@ SITREP_OBJECT_DAMAGED_AT_SYSTEM_LABEL
 Object Damaged
 
 SITREP_SHIP_DAMAGED_AT_SYSTEM
-At %system%: a %shipdesign%, the '%ship%', was damaged; it is owned by %empire%.
+At %system%: a %empire% %shipdesign%, the '%ship%', was damaged.
 SITREP_SHIP_DAMAGED_AT_SYSTEM_LABEL
 Empire Ship Damaged
 
@@ -4334,7 +4354,7 @@ SITREP_PLANET_BOMBARDED_AT_SYSTEM_LABEL
 Empire Planet Bombarded
 
 SITREP_UNOWNED_PLANET_BOMBARDED_AT_SYSTEM
-The planet %planet% was bombarded at %system%.
+At %system%: The planet %planet% was bombarded.
 SITREP_UNOWNED_PLANET_BOMBARDED_AT_SYSTEM_LABEL
 Unowned Planet Bombarded
 
@@ -4363,7 +4383,7 @@ SITREP_PLANET_COLONIZED_LABEL
 Planet Colonized
 
 SITREP_NEW_COLONY_ESTABLISHED
-A new %species% colony has been established on %planet%.
+On %planet%: A new %species% colony has been established.
 SITREP_NEW_COLONY_ESTABLISHED_LABEL
 New Colony Established
 
@@ -4438,7 +4458,7 @@ SITREP_VICTORY_BIO_LABEL
 Victory Biological
 
 SITREP_POP_THRESHOLD
-The colony on %planet% has reached recolonizing size.
+On %planet%: The colony has reached recolonizing size.
 SITREP_POP_THRESHOLD_LABEL
 Colonizing Threshold
 
@@ -4448,7 +4468,7 @@ EFFECT_EXPERIMENT_MONSTERS_LAUNCH_LABEL
 Experimentor Monster Spawn
 
 EFFECT_ANCIENT_SHIP
-A %predefinedshipdesign% on %planet% was revealed in the Ancient Ruins!
+On %planet%: A %predefinedshipdesign% was revealed in the Ancient Ruins!
 EFFECT_ANCIENT_SHIP_LABEL
 Ancient Ruins Ship
 
@@ -4458,7 +4478,7 @@ EFFECT_ANCIENT_SHIP_RUMORS_LABEL
 Ancient Ruins Ship Rumors
 
 EFFECT_ANCIENT_BUILDING
-A %buildingtype% on %planet% was revealed in the Ancient Ruins!
+On %planet%: A %buildingtype% was revealed in the Ancient Ruins!
 EFFECT_ANCIENT_BUILDING_LABEL
 Ancient Ruins Building
 
@@ -4468,7 +4488,7 @@ EFFECT_ANCIENT_BUILDING_RUMORS_LABEL
 Ancient Ruins Building Rumors
 
 EFFECT_ANCIENT_TECH
-%tech% was revealed on %planet% in the Ancient Ruins!
+On %planet%: %tech% was revealed in the Ancient Ruins!
 EFFECT_ANCIENT_TECH_LABEL
 Ancient Ruins Tech
 
@@ -4478,7 +4498,7 @@ EFFECT_ANCIENT_TECH_RUMORS_LABEL
 Ancient Ruins Tech Rumors
 
 EFFECT_ANCIENT_RUINS_EMPTY
-On %planet% Ancient Ruins were excavated, but only tantalizing hints of ancient technology were found.
+On %planet%: Ancient Ruins were excavated, but only tantalizing hints of ancient technology were found.
 EFFECT_ANCIENT_RUINS_EMPTY_LABEL
 Ancient Ruins Empty Excavation
 
@@ -4488,17 +4508,17 @@ EFFECT_CONC_CAMP_COMLETE_LABEL
 Ethnic Cleansing
 
 EFFECT_DRYDOCK_SHIP_REPAIR
-%ship% was repaired by %building% on %planet%.
+On %planet%: %ship% was repaired by %building%.
 EFFECT_DRYDOCK_SHIP_REPAIR_LABEL
 Drydock Repair
 
 EFFECT_MONSTER_SPAWNING
-A %predefinedshipdesign% was spawned in %system%.
+In %system%: A %predefinedshipdesign% was spawned.
 EFFECT_MONSTER_SPAWNING_LABEL
 Monster Spawn
 
 EFFECT_GAIAN_TERRAFORM
-The Gaian planet %planet% has terraformed itself to better accommodate its inhabitants.
+On %planet%: The Gaian planet has terraformed itself to better accommodate its inhabitants.
 EFFECT_GAIAN_TERRAFORM_LABEL
 Gaia Terraform
 
@@ -4588,12 +4608,12 @@ EFFECT_PSY_DOM_LABEL
 Psychogenic Domination
 
 EFFECT_MINES
-At %system%: %rawtext% points of structure damage to %fleet% ships (owned by %empire%) was inflicted by mines.
+At %system%: Mines caused %rawtext% damage to the %empire% fleet %fleet%.
 EFFECT_MINES_LABEL
 System Mines
 
 EFFECT_MINES_SHIP_DESTROYED
-At %system%: mines destroyed the %ship% (owned by %empire%).
+At %system%: mines destroyed the %empire% ship %ship%.
 EFFECT_MINES_SHIP_DESTROYED_LABEL
 System Mines Destroyed Ship
 
@@ -4645,6 +4665,12 @@ Environmental Preferences:
 
 FOCUS_PREFERENCE
 '''Preferred Focus: '''
+
+OPINIONS_OF_EMPIRES
+Opinions of Empires:
+
+OPINIONS_OF_OTHER_SPECIES
+Opinions of Other Species:
 
 ### Note: Description Macros for species are named the same as the Effect controlling Macros in species.txt. Copy&Paste for accurate description.
 
@@ -5620,7 +5646,7 @@ World Tree
 WORLDTREE_SPECIAL_DESC
 '''Increases [[encyclopedia SUPPLY_TITLE]] by +1, [[encyclopedia DETECTION_RANGE_TITLE]] by +10, max Population by +1, Happiness on the planet that has the special by +5 and Happiness on all other planets owned by the same empire by +1
 
-A gigantic tree has grown so large that its crown has left the atmosphere of the planet. Scientists suspect that it has been plantet by the Curators in ancient times.'''
+A gigantic tree has grown so large that its crown has left the atmosphere of the planet. Scientists suspect that it has been planted by the Curators in ancient times.'''
 
 ANCIENT_RUINS_DEPLETED_SPECIAL
 Ancient Ruins (Excavated)
@@ -5796,86 +5822,77 @@ An Experimentor outpost exists in this system, and defeating them is necessary t
 PROBIOTIC_SPECIAL
 Probiotic Soup
 PROBIOTIC_SPECIAL_DESC
-'''Increases max Population if inhabited by Organic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Probiotic Soup is focused on Growth, all connected planets with Organic species receive the same bonus.
+'''The great diversity of unique single-celled organisms have applications to the health and maintenance of all types of organic life.
 
-The great diversity of unique single-celled organisms have applications to the health and maintenance of all types of organic life.'''
+[[encyclopedia ORGANIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[ORGANIC_SPECIES_TITLE]]'''
 
 FRUIT_SPECIAL
 Caretaker's Fruit
 FRUIT_SPECIAL_DESC
-'''Increases max Population if inhabited by Organic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Caretaker's Fruit is focused on Growth, all connected planets with Organic species receive the same bonus.
+'''What appears to be a forest is actually part of a continent-spanning symbiotic organism. The fruit of these trees contains marvelously complex organic chemicals beneficial to all sorts of organic life.
 
-What appears to be a forest is actually part of a continent-spanning symbiotic organism. The fruit of these trees contains marvelously complex organic chemicals beneficial to all sorts of organic life.'''
+[[encyclopedia ORGANIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[ORGANIC_SPECIES_TITLE]]'''
 
 SPICE_SPECIAL
 Ki Spice
 SPICE_SPECIAL_DESC
-'''Increases max Population if inhabited by Organic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Ki Spice is focused on Growth, all connected planets with Organic species receive the same bonus.
+'''A unique substance produced by this planet's ecology, Ki Spice has the capacity to lengthen the lives, clarify the thoughts, or sharpen the senses of organic beings.
 
-A unique substance produced by this planet's ecology, Ki Spice has the capacity to lengthen the lives, clarify the thoughts, or sharpen the senses of organic beings.'''
+[[encyclopedia ORGANIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[ORGANIC_SPECIES_TITLE]]'''
 
 MONOPOLE_SPECIAL
 Monopole Magnets
 MONOPOLE_SPECIAL_DESC
-'''Increases max Population if inhabited by Robotic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Monopole Magnets is focused on Growth, all connected planets with Robotic species receive the same bonus.
+'''Monopole Magnets make stronger robots!
 
-When focused on Industry, increases target [[encyclopedia INDUSTRY_TITLE]] by 0.2 per Population.
+[[encyclopedia ROBOTIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[ROBOTIC_SPECIES_TITLE]]
 
-Monopole Magnets make better robots!'''
+[[GROWTH_SPECIAL_INDUSTRY_BOOST]] '''
 
 SUPERCONDUCTOR_SPECIAL
 Ambient Superconductors
 SUPERCONDUCTOR_SPECIAL_DESC
-'''Increases max Population if inhabited by Robotic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Ambient Superconductors is focused on Growth, all connected planets with Robotic species receive the same bonus.
+'''Ambient Superconductors make faster robots!
 
-When focused on Industry, increases target [[encyclopedia INDUSTRY_TITLE]] by 0.2 per Population.
+[[encyclopedia ROBOTIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[ROBOTIC_SPECIES_TITLE]]
 
-Ambient Superconductors make better robots!'''
+[[GROWTH_SPECIAL_INDUSTRY_BOOST]]'''
 
 POSITRONIUM_SPECIAL
 Positronium Ash
 POSITRONIUM_SPECIAL_DESC
-'''Increases max Population if inhabited by Robotic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Positronium Ash is focused on Growth, all connected planets with Robotic species receive the same bonus. 
+'''Positronium Ash makes better robots brains!
 
-When focused on Industry, increases target [[encyclopedia INDUSTRY_TITLE]] by 0.2 per Population.
+[[encyclopedia ROBOTIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[ROBOTIC_SPECIES_TITLE]]
 
-Positronium Ash make better robots brains!'''
+[[GROWTH_SPECIAL_INDUSTRY_BOOST]]'''
 
 MINERALS_SPECIAL
 Ferric Minerals
 MINERALS_SPECIAL_DESC
-'''Increases max Population if inhabited by Lithic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Ferric Minerals is focused on Growth, all connected planets with Lithic species receive the same bonus.
+'''This planet has a rich natural deposit of minerals, boosting production or Lithic growth significantly.
 
-When focused on Industry, increases target [[encyclopedia INDUSTRY_TITLE]] by 0.2 per Population.
+[[encyclopedia LITHIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[LITHIC_SPECIES_TITLE]]
 
-This planet has a rich natural deposit of minerals, boosting production or Lithic growth significantly.'''
+[[GROWTH_SPECIAL_INDUSTRY_BOOST]]'''
 
 CRYSTALS_SPECIAL
 Silmaline Crystals
 CRYSTALS_SPECIAL_DESC
-'''Increases max Population if inhabited by Lithic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Silmaline Crystals is focused on Growth, all connected planets with Lithic species receive the same bonus.
+'''This planet has a rich natural deposit of minerals, boosting production or Lithic growth significantly.
 
-When focused on Industry, increases target [[encyclopedia INDUSTRY_TITLE]] by 0.2 per Population.
+[[encyclopedia LITHIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[LITHIC_SPECIES_TITLE]]
 
-This planet has a rich natural deposit of minerals, boosting production or Lithic growth significantly.'''
+[[GROWTH_SPECIAL_INDUSTRY_BOOST]]'''
 
 ELERIUM_SPECIAL
 Native Elerium
 ELERIUM_SPECIAL_DESC
-'''Increases max Population if inhabited by Lithic species by planet size; Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5.
-When a planet with Native Elerium is focused on Growth, all connected planets with Lithic species receive the same bonus.
+'''This planet has a rich natural deposit of pure elerium, boosting production or Lithic growth significantly.
 
-When focused on Industry, increases target [[encyclopedia INDUSTRY_TITLE]] by 0.2 per Population.
+[[encyclopedia LITHIC_SPECIES_TITLE]] [[GROWTH_SPECIAL_POPULATION_INCREASE]] [[LITHIC_SPECIES_TITLE]]
 
-This planet has a rich natural deposit of pure elerium, boosting production or Lithic growth significantly.'''
+[[GROWTH_SPECIAL_INDUSTRY_BOOST]]'''
 
 STARSPAWN_NEBULA_SPECIAL
 Starspawn Nebula
@@ -6643,6 +6660,9 @@ Modifies the appearance of the object
 
 DESC_SET_TEXTURE
 Modifies the appearance of the object
+
+DESC_CONDITIONAL
+Applies various effects depending on whether or not the target is an object %1%
 
 # Object Creation
 
@@ -8541,13 +8561,13 @@ SHP_DEATH_SPORE
 Death Spores
 
 SHP_DEATH_SPORE_DESC
-Unlocks the [[shippart SP_DEATH_SPORE]] which allows ships to reduce the population of planets with [[encyclopedia ORGANIC_SPECIES_TITLE]].
+Unlocks the [[shippart SP_DEATH_SPORE]] which allows ships to reduce the population of enemy planets.
 
 SHP_BIOTERM
 Bio-Terminators
 
 SHP_BIOTERM_DESC
-Unlocks the [[shippart SP_BIOTERM]], which allows ships to greatly reduce the population of planets with [[encyclopedia ORGANIC_SPECIES_TITLE]].
+Unlocks the [[shippart SP_BIOTERM]], which allows ships to greatly reduce the population of enemy planets.
 
 SPY_PLANET_STEALTH_MOD
 Planet Stealth Modifier
@@ -8849,7 +8869,7 @@ Solar Orbital Generator
 
 BLD_SOL_ORB_GEN_DESC
 '''Increases target [[encyclopedia INDUSTRY_TITLE]] on [[encyclopedia SUPPLY_TITLE]] line connected planets by 0.4, 0.2 or 0.1 per Population when built in systems with Blue/White, Yellow/Orange, or Red stars, respectively.
-[[NO_STACK_SUPPLY_CONNECTION_TEXT]] The best bonus apllies.
+[[NO_STACK_SUPPLY_CONNECTION_TEXT]] The best bonus applies.
 
 A power generator in low solar orbit designed to tap directly into the star's energy. Since different star types produce different amounts of energy, the system-wide industry bonus is dependent on star type. This building can be built at an outpost.'''
 
@@ -9039,125 +9059,152 @@ Nova Bomb Activator
 BLD_NOVA_BOMB_ACTIVATOR_DESC
 Activates all Nova Bombs within one starlane jump.
 
+BLD_COL_PART_1
+This building can only build at an outpost, and will upgrade that outpost to a new
+
+BLD_COL_PART_2
+Minimum build time depends on the total starlane distance to the nearest
+
+BLD_COL_PART_3
+owned by the empire, and will increase the farther away it is; the time will also be reduced if the empire owns fast ships
+
 BLD_COL_ABADDONI
 Abaddoni Colony
 
 BLD_COL_ABADDONI_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Abaddoni colony. Minimum build time depends on the jump distance to the nearest Abaddoni colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Abaddoni colony. [[BLD_COL_PART_2]] Abaddoni colony [[BLD_COL_PART_3]].
 
 BLD_COL_CHATO
 Chato Colony
 
 BLD_COL_CHATO_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Chato colony. Minimum build time depends on the jump distance to the nearest Chato colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Chato colony. [[BLD_COL_PART_2]] Chato colony [[BLD_COL_PART_3]].
 
 BLD_COL_CRAY
 Cray Colony
 
 BLD_COL_CRAY_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Cray colony. Minimum build time depends on the jump distance to the nearest Cray colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Cray colony. [[BLD_COL_PART_2]] Cray colony [[BLD_COL_PART_3]].
 
 BLD_COL_DERTHREAN
 Derthrean Colony
 
 BLD_COL_DERTHREAN_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Derthrean colony. Minimum build time depends on the jump distance to the nearest Derthrean colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Derthrean colony. [[BLD_COL_PART_2]] Derthrean colony [[BLD_COL_PART_3]].
 
 BLD_COL_EAXAW
 Eaxaw Colony
 
 BLD_COL_EAXAW_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Eaxaw colony. Minimum build time depends on the jump distance to the nearest Eaxaw colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Eaxaw colony. [[BLD_COL_PART_2]] Eaxaw colony [[BLD_COL_PART_3]].
 
 BLD_COL_EGASSEM
 Egassem Colony
 
 BLD_COL_EGASSEM_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Egassem colony. Minimum build time depends on the jump distance to the nearest Egassem colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Egassem colony. [[BLD_COL_PART_2]] Egassem colony [[BLD_COL_PART_3]].
 
 BLD_COL_ETTY
 Etty Colony
 
 BLD_COL_ETTY_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Etty colony. Minimum build time depends on the jump distance to the nearest Etty colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Etty colony. [[BLD_COL_PART_2]] Etty colony [[BLD_COL_PART_3]].
+
+BLD_COL_FURTHEST
+Furthest Colony
+
+BLD_COL_FURTHEST_DESC
+[[BLD_COL_PART_1]] Furthest colony. [[BLD_COL_PART_2]] Furthest colony [[BLD_COL_PART_3]].
 
 BLD_COL_GEORGE
 George Colony
 
 BLD_COL_GEORGE_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new George colony. Minimum build time depends on the jump distance to the nearest George colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] George colony. [[BLD_COL_PART_2]] George colony [[BLD_COL_PART_3]].
 
 BLD_COL_GYSACHE
 Gysache Colony
 
 BLD_COL_GYSACHE_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Gysache colony. Minimum build time depends on the jump distance to the nearest Gysache colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Gysache colony. [[BLD_COL_PART_2]] Gysache colony [[BLD_COL_PART_3]].
 
 BLD_COL_HHHOH
 Hhhoh Colony
 
 BLD_COL_HHHOH_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Hhhoh colony. Minimum build time depends on the jump distance to the nearest Hhhoh colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Hhhoh colony. [[BLD_COL_PART_2]] Hhhoh colony [[BLD_COL_PART_3]].
 
 BLD_COL_HUMAN
 Human Colony
 
 BLD_COL_HUMAN_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Human colony. Minimum build time depends on the jump distance to the nearest Human colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Human colony. [[BLD_COL_PART_2]] Human colony [[BLD_COL_PART_3]].
 
 BLD_COL_KOBUNTURA
 Kobuntura Colony
 
 BLD_COL_KOBUNTURA_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Kobuntura colony. Minimum build time depends on the jump distance to the nearest Kobuntura colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Kobuntura colony. [[BLD_COL_PART_2]] Kobuntura colony [[BLD_COL_PART_3]].
 
 BLD_COL_LAENFA
 Laenfa Colony
 
 BLD_COL_LAENFA_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Laenfa colony. Minimum build time depends on the jump distance to the nearest Laenfa colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Laenfa colony. [[BLD_COL_PART_2]] Laenfa colony [[BLD_COL_PART_3]].
 
 BLD_COL_MUURSH
 Mu Ursh Colony
 
 BLD_COL_MUURSH_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Mu Ursh colony. Minimum build time depends on the jump distance to the nearest Mu Ursh colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Mu Ursh colony. [[BLD_COL_PART_2]] Mu Ursh colony [[BLD_COL_PART_3]].
+
+BLD_COL_PHINNERT
+Phinnert Colony
+
+BLD_COL_PHINNERT_DESC
+[[BLD_COL_PART_1]] Phinnert colony. [[BLD_COL_PART_2]] Phinnert colony [[BLD_COL_PART_3]].
 
 BLD_COL_SCYLIOR
 Scylior Colony
 
 BLD_COL_SCYLIOR_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Scylior colony. Minimum build time depends on the jump distance to the nearest Scylior colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Scylior colony. [[BLD_COL_PART_2]] Scylior colony [[BLD_COL_PART_3]].
 
 BLD_COL_SETINON
 Setinon Colony
 
 BLD_COL_SETINON_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Setinon colony. Minimum build time depends on the jump distance to the nearest Setinon colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Setinon colony. [[BLD_COL_PART_2]] Setinon colony [[BLD_COL_PART_3]].
+
+BLD_COL_SILEXIAN
+Silexian Colony
+
+BLD_COL_SILEXIAN_DESC
+[[BLD_COL_PART_1]] Silexian colony. [[BLD_COL_PART_2]] Silexian colony [[BLD_COL_PART_3]].
 
 BLD_COL_SSLITH
 Sslith Colony
 
 BLD_COL_SSLITH_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Sslith colony. Minimum build time depends on the jump distance to the nearest Sslith colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Sslith colony. [[BLD_COL_PART_2]] Sslith colony [[BLD_COL_PART_3]].
 
 BLD_COL_TAEGHIRUS
 Tae Ghirus Colony
 
 BLD_COL_TAEGHIRUS_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Tae Ghirus colony. Minimum build time depends on the jump distance to the nearest Tae Ghirus colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Tae Ghirus colony. [[BLD_COL_PART_2]] Tae Ghirus colony [[BLD_COL_PART_3]].
 
 BLD_COL_TRITH
 Trith Colony
 
 BLD_COL_TRITH_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Trith colony. Minimum build time depends on the jump distance to the nearest Trith colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Trith colony. [[BLD_COL_PART_2]] Trith colony [[BLD_COL_PART_3]].
 
 BLD_COL_UGMORS
 Ugmors Colony
 
 BLD_COL_UGMORS_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Ugmors colony. Minimum build time depends on the jump distance to the nearest Ugmors colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Ugmors colony. [[BLD_COL_PART_2]] Ugmors colony [[BLD_COL_PART_3]].
 
 BLD_COL_EXOBOT
 Exobot Colony
@@ -9169,7 +9216,7 @@ BLD_COL_SUPER_TEST
 Super Tester Colony
 
 BLD_COL_SUPER_TEST_DESC
-This building can only build at an outpost, and will upgrade that outpost to a new Super Tester colony. Minimum build time depends on the jump distance to the nearest Super Tester colony, and will increase the farther away it is.
+[[BLD_COL_PART_1]] Super Tester colony. [[BLD_COL_PART_2]] Super Tester colony [[BLD_COL_PART_3]].
 
 #############################################################
 ####           Hull/Part Description Templates           ####
@@ -9190,8 +9237,8 @@ PART_DESC_SHIELD_STRENGTH
 Shield Strength: %1%
 
 PART_DESC_DETECTION
-Detection Strength: %1%
-# Detection Range: %2%
+Detection Range: %1%
+# Detection Strength: %1%
 
 PART_DESC_DIRECT_FIRE_STATS
 Attack Damage: %1%
@@ -9683,13 +9730,13 @@ SP_DEATH_SPORE
 Death Spores
 
 SP_DEATH_SPORE_DESC
-A biological weapon which reduces the population of a planet with [[encyclopedia ORGANIC_SPECIES_TITLE]].
+A biological weapon which reduces the population of enemy planets.
 
 SP_BIOTERM
 Bio-Terminators
 
 SP_BIOTERM_DESC
-A powerful biological weapon which quickly reduces the population of a planet with [[encyclopedia ORGANIC_SPECIES_TITLE]].
+A powerful biological weapon which quickly reduces the population of enemy planets.
 
 SP_NOVA_BOMB
 Nova Bomb
@@ -10234,7 +10281,31 @@ A cosmic cloud of high energetic particles.
 #############################################################
 
 NO_STACK_SUPPLY_CONNECTION_TEXT
-Multiple copies in the same supply connection do not stack.
+More than one in the same [[encyclopedia SUPPLY_TITLE]] connected Resource Group do not stack and add no extra bonus.
+
+#############################################################
+####              Growth Macros                          ####
+#############################################################
+
+GROWTH_SPECIAL_POPULATION_INCREASE
+'''species inhabiting this planet will have the maximum population boosted by planet size (Tiny: +1, Small: +2, Medium: +3, Large: +4, Huge: +5) regardless of planetary environmment. 
+
+If this planet is set to the [[encyclopedia GROWTH_FOCUS_TITLE]], the bonus is applied to all [[encyclopedia SUPPLY_TITLE]] connected worlds inhabited by species with''' 
+
+GROWTH_SPECIAL_INDUSTRY_BOOST
+If this planet is set to the Industry Focus, target [[encyclopedia INDUSTRY_TITLE]] is increased by 0.2 per Population.
+
+GROWTH_SPECIALS_ENTRY_LIST
+'''Growth Special planets focused on growth only help a single classification of species. Some specials function for organic species only, some for lithic species only, and some for robotic species only.
+
+[[encyclopedia ORGANIC_SPECIES_TITLE]] specials:
+[[special FRUIT_SPECIAL]] | [[special SPICE_SPECIAL]] | [[special PROBIOTIC_SPECIAL]]
+
+[[encyclopedia ROBOTIC_SPECIES_TITLE]] specials:
+[[special MONOPOLE_SPECIAL]] | [[special SUPERCONDUCTOR_SPECIAL]] | [[special POSITRONIUM_SPECIAL]]
+
+[[encyclopedia LITHIC_SPECIES_TITLE]] specials:
+[[special MINERALS_SPECIAL]] | [[special ELERIUM_SPECIAL]] | [[special CRYSTALS_SPECIAL]]'''
 
 #############################################################
 ####              S P E C I E S   P I C K S              ####
@@ -10664,6 +10735,110 @@ Eternal
 Invincible'''
 
 ### End of Capital Names Lists
+
+### Beginning of AI Shipdesign Name List
+### Make sure that only one name is used per line. The names are roughly ordered by order of appearence in the game.
+### Adding more names here does not neccssarily mean they will be used by the AI as the switch to another name is determined by some algorithm.
+AI_SHIPDESIGN_NAME_INVALID
+Invalid Design
+
+AI_SHIPDESIGN_NAME_MILITARY
+'''Harpy
+Gorgon
+Centaur
+Cerberus
+Griffin
+Manticore
+Hydra
+Python
+Pegasus
+Phoenix
+Atlas
+Helios
+Prometheus
+Poseidon
+Hades
+Nemesis'''
+
+AI_SHIPDESIGN_NAME_TROOPER_ORBITAL
+SpaceInvaders
+
+AI_SHIPDESIGN_NAME_TROOPER_STANDARD
+StormTroopers
+
+AI_SHIPDESIGN_NAME_COLONISATION_ORBITAL
+Orbital Seeder
+
+AI_SHIPDESIGN_NAME_COLONISATION_STANDARD
+Seeder
+
+AI_SHIPDESIGN_NAME_OUTPOSTER_ORBITAL
+Orbital Outposter
+
+AI_SHIPDESIGN_NAME_OUTPOSTER_STANDARD
+Outposter
+
+AI_SHIPDESIGN_NAME_ORBITAL_DEFENSE
+'''Decoy
+Starbase'''
+
+AI_SHIPDESIGN_NAME_SCOUT
+Scout
+
+### AI Diplomacy Strings and Lists 
+### Translator Note: for AI Keys ending with "LIST", each line of the provided value should be an independent entry; each entry must be a single line.
+### For such lists, you may provide more or fewer entries than are provided in en.txt, unless otherwise indicated in a comment for that key
+
+AI_PEACE_PROPOSAL_ACKNOWLEDGEMENTS_MILD_LIST
+'''Nice to hear from you again.
+Receipt of transmission acknowledged.
+'''
+
+AI_PEACE_PROPOSAL_ACKNOWLEDGEMENTS_HARSH_LIST
+'''What? Aren't you dead yet?
+Oh, not another pathetic sob story, please!
+'''
+
+AI_PEACE_PROPOSAL_RESPONSES_YES_MILD_LIST
+'''We will be happy to trust your good intentions.
+Whatever you say, Boss.  Everyone says you are very trustworthy.
+'''
+
+AI_PEACE_PROPOSAL_RESPONSES_NO_MILD_LIST
+'''Unfortunately, that would be very inconvenient at this time.
+We regret to inform you that we are unable to comply with that request.
+'''
+
+AI_PEACE_PROPOSAL_RESPONSES_YES_HARSH_LIST
+'''Out of pity, we will agree to not attack you.  For now.
+Feeble Beings!  There would be little honor in vanquishing you.
+'''
+
+AI_PEACE_PROPOSAL_RESPONSES_NO_HARSH_LIST
+'''We will see you dead first!
+You will not have peace until all your base r belong to us!
+'''
+
+AI_WAR_REDECLARATION_MILD_LIST
+'''Oh dear! Apparently there were irregularities in our previous negotiations and the Peace Treaty was not ratified at all!  We regret to inform you that our empires are still at war.
+Today was the day that you said the other day that we would go to war together again, right?
+'''
+
+AI_WAR_REDECLARATION_HARSH_LIST
+'''Our Younglings thirst for you blood!  Prepare for War!
+You fools did not believe this peace would last, did you?
+'''
+
+AI_PREGAME_ACKNOWLEDGEMENTS__LIST
+'''I am meditating, awaiting instructions from God.  Call again later.
+Whispers from the Void?  How can that be?
+'''
+
+AI_MIDGAME_ACKNOWLEDGEMENTS__LIST
+'''Hang on, please. I am still trying to figure out how to do a proper Turing test on you.
+'''
+
+### End of AI Diplomacy Message Lists
 
 #############################################################
 ####           HOTKEYS NAMES AND DESCRIPTIONS            ####

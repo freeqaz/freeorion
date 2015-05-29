@@ -209,6 +209,10 @@ namespace {
     bool                    (Field::*LocationInField)(double x, double y) const =               &Field::InField;
 
     float                   (Special::*SpecialInitialCapacityOnObject)(int) const =             &Special::InitialCapacity;
+
+    bool EnqueueLocationTest(const BuildingType& building_type, int empire_id, int loc_id)
+    { return building_type.EnqueueLocation(empire_id, loc_id);}
+
 }
 
 namespace FreeOrionPython {
@@ -446,8 +450,6 @@ namespace FreeOrionPython {
             .def("description",                 make_function(&ShipDesign::Description,     return_value_policy<copy_const_reference>()))
             .add_property("designedOnTurn",     make_function(&ShipDesign::DesignedOnTurn,  return_value_policy<return_by_value>()))
             .add_property("speed",              make_function(&ShipDesign::Speed,           return_value_policy<return_by_value>()))
-            // TODO: remove starlaneSpeed after transition period for current content
-            .add_property("starlaneSpeed",      make_function(&ShipDesign::Speed,           return_value_policy<return_by_value>()))
             .add_property("structure",          make_function(&ShipDesign::Structure,       return_value_policy<return_by_value>()))
             .add_property("shields",            make_function(&ShipDesign::Shields,         return_value_policy<return_by_value>()))
             .add_property("fuel",               make_function(&ShipDesign::Fuel,            return_value_policy<return_by_value>()))
@@ -467,6 +469,8 @@ namespace FreeOrionPython {
             .def("productionCost",              &ShipDesign::ProductionCost)
             .def("productionTime",              &ShipDesign::ProductionTime)
             .def("perTurnCost",                 &ShipDesign::PerTurnCost)
+            .add_property("costTimeLocationInvariant",
+                                                &ShipDesign::ProductionCostTimeLocationInvariant)
             .add_property("hull",               make_function(&ShipDesign::Hull,            return_value_policy<return_by_value>()))
             .add_property("parts",              make_function(PartsVoid,                    return_internal_reference<>()))
             .add_property("attackStats",        make_function(
@@ -490,6 +494,8 @@ namespace FreeOrionPython {
             .def("productionCost",              &PartType::ProductionCost)
             .def("productionTime",              &PartType::ProductionTime)
             .def("canMountInSlotType",          &PartType::CanMountInSlotType)
+            .add_property("costTimeLocationInvariant",
+                                                &PartType::ProductionCostTimeLocationInvariant)
         ;
         def("getPartType",                      &GetPartType,                               return_value_policy<reference_existing_object>());
 
@@ -499,7 +505,8 @@ namespace FreeOrionPython {
             .add_property("structure",          &HullType::Structure)
             .add_property("stealth",            &HullType::Stealth)
             .add_property("fuel",               &HullType::Fuel)
-            .add_property("starlaneSpeed",      &HullType::Speed)
+            .add_property("starlaneSpeed",      &HullType::Speed) // TODO: Remove this after transition period
+            .add_property("speed",              &HullType::Speed)
             .def("numSlotsOfSlotType",          NumSlotsOfSlotType)
             .add_property("slots",              make_function(
                                                     HullSlotsFunc,
@@ -508,6 +515,8 @@ namespace FreeOrionPython {
                                                 ))
             .def("productionCost",              &HullType::ProductionCost)
             .def("productionTime",              &HullType::ProductionTime)
+            .add_property("costTimeLocationInvariant",
+                                                &HullType::ProductionCostTimeLocationInvariant)
         ;
         def("getHullType",                      &GetHullType,                               return_value_policy<reference_existing_object>());
 
@@ -532,6 +541,9 @@ namespace FreeOrionPython {
             .def("perTurnCost",                 &BuildingType::PerTurnCost)
             .def("captureResult",               &BuildingType::GetCaptureResult)
             .def("canBeProduced",               &BuildingType::ProductionLocation)  //(int empire_id, int location_id)
+            .def("canBeEnqueued",               &EnqueueLocationTest)  //(int empire_id, int location_id)
+            .add_property("costTimeLocationInvariant",
+                                                &BuildingType::ProductionCostTimeLocationInvariant)
             .add_property("dump",               &BuildingType::Dump)
         ;
         def("getBuildingType",                  &GetBuildingType,                           return_value_policy<reference_existing_object>());

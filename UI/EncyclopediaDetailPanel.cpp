@@ -369,35 +369,6 @@ namespace {
 }
 
 namespace {
-    void GetPartDescription(const PartType* part, std::string& description) {
-        if (!part)
-            return;
-        ShipPartClass part_class = part->Class();
-        std::string desc_string;
-        float d = part->Capacity();
-
-        switch (part_class) {
-        case PC_FUEL:
-        case PC_TROOPS:
-        case PC_COLONY:
-            desc_string += UserString("PART_DESC_CAPACITY");
-            break;
-        case PC_SHIELD:
-            desc_string = UserString("PART_DESC_SHIELD_STRENGTH");
-            break;
-        case PC_DETECTION:
-            desc_string = UserString("PART_DESC_DETECTION");
-            break;
-        default:
-            desc_string = UserString("PART_DESC_STRENGTH");
-            break;
-        }
-        description +=
-            str(FlexibleFormat(desc_string) % d);
-    }
-}
-
-namespace {
     class SearchEdit : public CUIEdit {
     public:
         SearchEdit() :
@@ -960,9 +931,7 @@ namespace {
         general_type = UserString("ENC_SHIP_PART");
         specific_type = UserString(boost::lexical_cast<std::string>(part->Class()));
 
-        std::string stat_description;
-        GetPartDescription(part, stat_description);
-        detailed_description += UserString(part->Description()) + "\n\n" + stat_description;
+        detailed_description += UserString(part->Description()) + "\n\n" + part->CapacityDescription();
 
         std::string slot_types_list;
         if (part->CanMountInSlotType(SL_EXTERNAL))
@@ -1286,11 +1255,11 @@ namespace {
         detailed_description += "\n" + UserString("EMPIRE_ID") + ": " + item_name;
 
         // Empire meters
-        detailed_description += "\n\n" + UserString("EMPIRE_METERS") + "\n";
-        for (std::map<std::string, Meter>::const_iterator meter_it = empire->meter_begin();
-             meter_it != empire->meter_end(); ++meter_it)
-        {
-            detailed_description += UserString(meter_it->first) + ": " + DoubleToString(meter_it->second.Initial(), 3, false) + "\n";
+        if (empire->meter_begin() != empire->meter_end()) {
+            detailed_description += "\n\n";
+            for (std::map<std::string, Meter>::const_iterator meter_it = empire->meter_begin();
+                 meter_it != empire->meter_end(); ++meter_it)
+            { detailed_description += UserString(meter_it->first) + ": " + DoubleToString(meter_it->second.Initial(), 3, false); }
         }
 
         // Planets
@@ -1652,7 +1621,7 @@ namespace {
         detailed_description += UserString(species->Description());
 
         // homeworld
-        detailed_description += "\n\n";
+        detailed_description += "\n";
         if (species->Homeworlds().empty()) {
             detailed_description += UserString("NO_HOMEWORLD") + "\n";
         } else {
@@ -1669,19 +1638,28 @@ namespace {
         }
 
         // occupied planets
-        std::vector<TemporaryPtr<Planet> > planets = Objects().FindObjects<Planet>();
         std::vector<TemporaryPtr<const Planet> > species_occupied_planets;
-        for (std::vector<TemporaryPtr<Planet> >::const_iterator planet_it = planets.begin();
-             planet_it != planets.end(); ++planet_it)
-        {
-            TemporaryPtr<const Planet> planet = *planet_it;
-            if (planet->SpeciesName() == item_name)
-                species_occupied_planets.push_back(planet);
+        std::map<std::string, std::map<int, float> >& species_object_populations = GetSpeciesManager().SpeciesObjectPopulations();
+        std::map<std::string, std::map<int, float> >::const_iterator sp_op_it = species_object_populations.find(item_name);
+        if (sp_op_it != species_object_populations.end()) {
+            const std::map<int, float>& object_pops = sp_op_it->second;
+            for (std::map<int, float>::const_iterator obj_it = object_pops.begin();
+                 obj_it != object_pops.end(); ++obj_it)
+            {
+                TemporaryPtr<const Planet> plt = GetPlanet(obj_it->first);
+                if (!plt)
+                    continue;
+                if (plt->SpeciesName() != item_name) {
+                    ErrorLogger() << "SpeciesManager SpeciesObjectPopulations suggested planet had a species, but it doesn't?";
+                    continue;
+                }
+                species_occupied_planets.push_back(plt);
+            }
         }
+
         if (!species_occupied_planets.empty()) {
             detailed_description += "\n" + UserString("OCCUPIED_PLANETS") + "\n";
-            for (std::vector<TemporaryPtr<const Planet> >::const_iterator planet_it =
-                     species_occupied_planets.begin();
+            for (std::vector<TemporaryPtr<const Planet> >::const_iterator planet_it = species_occupied_planets.begin();
                  planet_it != species_occupied_planets.end(); ++planet_it)
             {
                 TemporaryPtr<const Planet> planet = *planet_it;
@@ -1690,6 +1668,37 @@ namespace {
             }
             detailed_description += "\n";
         }
+
+        // empire opinions
+        const std::map<std::string, std::map<int, float> >& seom = GetSpeciesManager().GetSpeciesEmpireOpinionsMap();
+        std::map<std::string, std::map<int, float> >::const_iterator species_it = seom.find(species->Name());
+        if (species_it != seom.end()) {
+            detailed_description += "\n" + UserString("OPINIONS_OF_EMPIRES") + "\n";
+            for (std::map<int, float>::const_iterator empire_it = species_it->second.begin();
+                 empire_it != species_it->second.end(); ++empire_it)
+            {
+                const Empire* empire = GetEmpire(empire_it->first);
+                if (!empire)
+                    continue;
+            }
+        }
+
+        // species opinions
+        const std::map<std::string, std::map<std::string, float> >& ssom = GetSpeciesManager().GetSpeciesSpeciesOpinionsMap();
+        std::map<std::string, std::map<std::string, float> >::const_iterator species_it2 = ssom.find(species->Name());
+        if (species_it2 != ssom.end()) {
+            detailed_description += "\n" + UserString("OPINIONS_OF_OTHER_SPECIES") + "\n";
+            for (std::map<std::string, float>::const_iterator species_it3 = species_it2->second.begin();
+                 species_it3!= species_it2->second.end(); ++species_it3)
+            {
+                const Species* species2 = GetSpecies(species_it3->first);
+                if (!species2)
+                    continue;
+
+                detailed_description += UserString(species2->Name()) + " : " + DoubleToString(species_it3->second, 3, false) + "\n";
+            }
+        }
+
     }
 
     void RefreshDetailPanelFieldTypeTag(    const std::string& item_type, const std::string& item_name,
@@ -2120,16 +2129,12 @@ namespace {
             if (!species)
                 continue;
 
-            // Exclude species that can't colonize this planet (either by virtue
-            // of "can't produce ships" or "cannot colonize" traits) UNLESS they
+            // Exclude species that can't colonize UNLESS they
             // are already here (aka: it's their home planet). Showing them on
             // their own planet allows comparison vs other races, which might
             // be better suited to this planet. 
-            if (!species->CanProduceShips() || !species->CanColonize()) {
-                if (species_name != planet->SpeciesName())
-                    continue;
-            }
-            species_names.insert(species_name);
+            if (species->CanColonize() || species_name == planet->SpeciesName())
+                species_names.insert(species_name);
         }
 
         boost::shared_ptr<GG::Font> font = ClientUI::GetFont();

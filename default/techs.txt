@@ -816,6 +816,7 @@ Tech
         "LRN_NDIM_SUBSPACE"
     ]
     unlock = Item type = Building name = "BLD_GATEWAY_VOID"
+    graphic = "icons/tech/monument_to_exodus.png"
 
 Tech
     name = "LRN_ENCLAVE_VOID"
@@ -1798,6 +1799,7 @@ Tech
     unlock = [
         Item type = Building name = "BLD_STARGATE"
     ]
+    graphic = "icons/building/stargate.png"
 
 Tech
     name = "CON_ART_PLANET"

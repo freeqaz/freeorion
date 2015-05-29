@@ -163,3 +163,26 @@ COLONY_UPKEEP_MULTIPLICATOR
 
 FLEET_UPKEEP_MULTIPLICATOR
 '''(1 + 0.01 * ShipDesignsOwned empire = Source.Owner)'''
+
+/*   E F F E C T S   P R I O R I T I E S   */
+
+// Default = 100
+
+EARLY_PRIORITY
+'''90'''
+
+DEFAULT_PRIORITY
+'''100'''
+
+LATE_PRIORITY
+'''110'''
+
+
+/*   E N Q U E U E   C O N D I T I O N S   */
+
+ENQUEUE_BUILD_ONE_PER_PLANET
+'''And [
+        Not Contains Building name = CurrentContent
+        Not Enqueued type = Building name = CurrentContent
+        OwnedBy empire = Source.Owner
+    ]'''

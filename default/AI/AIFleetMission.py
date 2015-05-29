@@ -309,7 +309,7 @@ class AIFleetMission(object):
         if last_sys_target == fleet.systemID:
             return  # TODO: check for best local target
         open_targets = []
-        already_targeted = InvasionAI.get_invasion_targeted_planet_ids(system.planetIDs, AIFleetMissionType.FLEET_MISSION_INVASION, empire_id)
+        already_targeted = InvasionAI.get_invasion_targeted_planet_ids(system.planetIDs, AIFleetMissionType.FLEET_MISSION_INVASION)
         for pid in system.planetIDs:
             if pid in already_targeted or (pid in foAI.foAIstate.qualifyingTroopBaseTargets):
                 continue
@@ -320,7 +320,7 @@ class AIFleetMission(object):
                 open_targets.append(pid)
         if not open_targets:
             return
-        troop_pod_tally = FleetUtilsAI.count_parts_fleetwide(fleet_id, ["GT_TROOP_POD"])
+        troops_in_fleet = FleetUtilsAI.count_troops_in_fleet(fleet_id)
         target_id = -1
         best_score = -1
         target_troops = 0
@@ -330,7 +330,7 @@ class AIFleetMission(object):
         for pid, rating in InvasionAI.assign_invasion_values(open_targets, AIFleetMissionType.FLEET_MISSION_INVASION, fleet_supplyable_planet_ids, empire).items():
             p_score, p_troops = rating
             if p_score > best_score:
-                if p_troops >= 2 * troop_pod_tally:
+                if p_troops >= troops_in_fleet:
                     continue
                 best_score = p_score
                 target_id = pid
@@ -342,10 +342,11 @@ class AIFleetMission(object):
         new_fleets = FleetUtilsAI.split_fleet(fleet_id)
         self.clear_targets(-1)  # TODO: clear from foAIstate
         self.clear_fleet_orders()
-        pods_needed = max(0, math.ceil((target_troops - 2 * (FleetUtilsAI.count_parts_fleetwide(fleet_id, ["GT_TROOP_POD"])) + 0.05) / 2.0))
+        # pods_needed = max(0, math.ceil((target_troops - 2 * (FleetUtilsAI.count_parts_fleetwide(fleet_id, ["GT_TROOP_POD"])) + 0.05) / 2.0))
+        troops_needed = max(0, target_troops - FleetUtilsAI.count_troops_in_fleet(fleet_id))
         found_stats = {}
-        min_stats = {'rating': 0, 'troopPods': pods_needed}
-        target_stats = {'rating': 10, 'troopPods': pods_needed}
+        min_stats = {'rating': 0, 'troopCapacity': troops_needed}
+        target_stats = {'rating': 10, 'troopCapacity': troops_needed}
         found_fleets = []
         # TODO check if next statement does not mutate any global states and can be removed
         _ = FleetUtilsAI.get_fleets_for_mission(1, target_stats, min_stats, found_stats, "",
@@ -397,7 +398,7 @@ class AIFleetMission(object):
                 if order_type == AIFleetOrderType.ORDER_MOVE:
                     this_system_id = fleet_order.target.target_id
                     this_status = foAI.foAIstate.systemStatus.setdefault(this_system_id, {})
-                    if this_status.get('monsterThreat', 0) > fo.currentTurn() * ProductionAI.cur_best_mil_ship_rating()/4.0:
+                    if this_status.get('monsterThreat', 0) > fo.currentTurn() * MilitaryAI.cur_best_mil_ship_rating()/4.0:
                         first_mission = self.get_mission_types()[0] if self.get_mission_types() else AIFleetMissionType.FLEET_MISSION_INVALID
                         if (first_mission not in (AIFleetMissionType.FLEET_MISSION_ATTACK,
                                                    AIFleetMissionType.FLEET_MISSION_MILITARY,

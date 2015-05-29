@@ -9,6 +9,29 @@ BuildingType
     tags = "ANTIQUATED"
     location = Described description = "NOWHERE" condition = Not All
     effectsgroups = [
+/*  // testing priority
+    // Research should see a x2 bonus, then a +5 bonus.
+    // Industry should see a +5 bonus, then a x2 bonus.
+        EffectsGroup
+            scope = Object id = Source.PlanetID
+            accountinglabel = "research_plus_5"
+            effects = SetTargetResearch value = Value + 5
+        EffectsGroup
+            scope = Object id = Source.PlanetID
+            accountinglabel = "research_times_2"
+            priority = [[EARLY_PRIORITY]]
+            effects = SetTargetResearch value = Value * 2
+        EffectsGroup
+            scope = Object id = Source.PlanetID
+            accountinglabel = "industry_plus_5"
+            priority = [[DEFAULT_PRIORITY]]
+            effects = SetTargetIndustry value = Value + 5
+        EffectsGroup
+            scope = Object id = Source.PlanetID
+            accountinglabel = "industry_times_2"
+            priority = [[LATE_PRIORITY]]
+            effects = SetTargetIndustry value = Value * 2
+*/
 /*  // testing effects
         EffectsGroup
             scope = And [
@@ -242,6 +265,7 @@ BuildingType
         Not Contains Building name = "BLD_SHIPYARD_BASE"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups =
         EffectsGroup
             scope = And [ 
@@ -266,6 +290,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -317,6 +342,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-2.png"
 
 BuildingType
@@ -338,6 +364,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-3.png"
 
 BuildingType
@@ -359,6 +386,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-4.png"
 
 BuildingType
@@ -371,11 +399,14 @@ BuildingType
         Not Contains Building name = "BLD_SHIPYARD_AST"
         Planet type = Asteroids
         OwnedBy empire = Source.Owner
+        
+        /* TODO: Check that one, seems to be weird */
         Not Contains And [
             Building name = "BLD_SHIPYARD_AST"
             OwnedBy empire = Source.Owner
         ]
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-5.png"
 
 BuildingType
@@ -397,6 +428,7 @@ BuildingType
             OwnedBy empire = Source.Owner
         ]
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-6.png"
 
 BuildingType
@@ -414,6 +446,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-7.png"
 
 BuildingType
@@ -435,6 +468,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-8.png"
 
 BuildingType
@@ -456,6 +490,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-9.png"
 
 BuildingType
@@ -473,6 +508,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-10.png"
 
 BuildingType
@@ -494,6 +530,7 @@ BuildingType
         ]
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/shipyard-16.png"
 
 BuildingType
@@ -511,6 +548,7 @@ BuildingType
             Building name = "BLD_BIOTERROR_PROJECTOR"
         ]
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/bioterror_projector.png"
 
 BuildingType
@@ -523,6 +561,7 @@ BuildingType
         Not Contains Building name = "BLD_LIGHTHOUSE"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = WithinDistance distance = 0.00001 condition = Source
@@ -551,6 +590,7 @@ BuildingType
         Not Contains Building name = "BLD_SCANNING_FACILITY"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -572,6 +612,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/heavy_mining_processor.png"
 
 BuildingType
@@ -585,6 +626,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -625,7 +667,7 @@ BuildingType
             stackinggroup = "INDUSTRY_CENTER_STACK"
             effects = SetTargetIndustry value = Value + Target.Population * 3 * [[INDUSTRY_PER_POP]]
     ]
-    icon = ""
+    icon = "icons/tech/industrial_centre_ii.png"
 
 BuildingType
     name = "BLD_MEGALITH"
@@ -638,6 +680,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -677,6 +720,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -704,7 +748,7 @@ BuildingType
             stackinggroup = "BLD_COLLECTIVE_NET_RESEARCH_EFFECT"
             effects = SetTargetResearch value = Value + Target.Population * 2.5 * [[RESEARCH_PER_POP]]
     ]
-    icon = ""
+    icon = "icons/building/psi-corps.png"
 
 BuildingType
     name = "BLD_GENOME_BANK"
@@ -717,6 +761,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/genome_bank.png"
 
 BuildingType
@@ -731,6 +776,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -795,6 +841,7 @@ BuildingType
         Not Planet type = [Asteroids GasGiant]
         Not HasSpecial name = "GAIA_SPECIAL"
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -822,6 +869,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         Star type = Red
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -857,6 +905,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -892,6 +941,7 @@ BuildingType
         Not Contains Building name = "BLD_SOL_ORB_GEN"
         OwnedBy empire = Source.Owner
         ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1070,6 +1120,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         Star type = Neutron
         ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/neutronium-forge.png"
 
 BuildingType
@@ -1084,6 +1135,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         TargetPopulation low = 1
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/neutronium-forge.png"
 
 BuildingType
@@ -1108,6 +1160,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         Population low = 3
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1206,6 +1259,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         Star type = BlackHole
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1229,6 +1283,7 @@ BuildingType
         Not Contains Building name = "BLD_REPLICATORS"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = ""
 
 BuildingType
@@ -1242,7 +1297,8 @@ BuildingType
         OwnedBy empire = Source.Owner
         Not Planet type = Asteroids
     ]
-    icon = ""
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
+    icon = "icons/building/shipyard-11.png"
 
 BuildingType
     name = "BLD_PLANET_BEACON"
@@ -1253,6 +1309,7 @@ BuildingType
         Not Contains Building name = "BLD_PLANET_BEACON"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups =
         EffectsGroup
             scope = Source
@@ -1274,6 +1331,7 @@ BuildingType
         Planet type = [Asteroids GasGiant]
         Population high = 0
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1312,6 +1370,7 @@ BuildingType
         OwnerHasTech name = "PRO_EXOBOTS"
         Population high = 0
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1352,6 +1411,7 @@ BuildingType
         OwnerHasTech name = "GRO_GAIA_TRANS"
         Population high = 0
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1374,7 +1434,7 @@ BuildingType
             activation = Source
             effects = Destroy
     ]
-    icon = "icons/specials_huge/gaia.png"
+    icon = "icons/tech/paradise_planet.png"
 
 BuildingType
     name = "BLD_ART_MOON"
@@ -1387,6 +1447,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         Not Planet type = [Asteroids GasGiant]
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups =
         EffectsGroup
             scope = And [
@@ -1406,6 +1467,7 @@ BuildingType
         Not Contains Building name = "BLD_TRANSFORMER"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/transformer.png"
 
 BuildingType
@@ -1417,6 +1479,7 @@ BuildingType
         Not Contains Building name = "BLD_GATEWAY_VOID"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1448,7 +1511,7 @@ BuildingType
             activation = Source
             effects = SetStealth value = Value + 1000
     ]
-    icon = ""
+    icon = "icons/building/monument_to_exodus.png"
 
 BuildingType
     name = "BLD_ENCLAVE_VOID"
@@ -1459,6 +1522,7 @@ BuildingType
         Not Contains Building name = "BLD_ENCLAVE_VOID"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1470,7 +1534,7 @@ BuildingType
             stackinggroup = "BLD_ENCLAVE_VOID_STACK"
             effects = SetTargetResearch value = Value + Target.Population * 3.75 *  [[RESEARCH_PER_POP]]
     ]
-    icon = ""
+    icon = "icons/building/science-institute.png"
 
 BuildingType
     name = "BLD_PLANET_CLOAK"
@@ -1481,6 +1545,7 @@ BuildingType
         Not Contains Building name = "BLD_PLANET_CLOAK"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = ""
 
 BuildingType
@@ -1492,6 +1557,7 @@ BuildingType
         Not Contains Building name = "BLD_SPATIAL_DISTORT_GEN"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = ""
 
 BuildingType
@@ -1509,6 +1575,7 @@ BuildingType
         Not Contains Building name = "BLD_STARGATE"
         OwnedBy empire = Source.Owner
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     icon = "icons/building/stargate.png"
 
 BuildingType
@@ -1523,6 +1590,7 @@ BuildingType
         OwnedBy empire = Source.Owner
         Planet type = GasGiant
     ]
+    EnqueueLocation = [[ENQUEUE_BUILD_ONE_PER_PLANET]]
     effectsgroups = [
         EffectsGroup
             scope = And [
@@ -1552,6 +1620,7 @@ BuildingType
         Population low = [[MIN_RECOLONIZING_SIZE]]
         OwnedBy empire = Source.Owner
     ]
+    /* TODO: Disable colony base if there is no possibility in the current system */
     effectsgroups = [
         EffectsGroup
             scope = Source
@@ -1604,11 +1673,7 @@ BuildingType
                     Planet
                 ]
             ]
-            effects = [
-                SetStealth value = Value + 60
-                SetMaxShield value = Value + [[EXPERIMENTOR_SPAWN_START_TURN]]
-                SetMaxDefense value = Value + ( [[EXPERIMENTOR_SPAWN_START_TURN]] / 5 )
-                ]
+            effects = SetStealth value = Value + 60
 
         EffectsGroup
             scope = Or [
@@ -1623,6 +1688,32 @@ BuildingType
                 ]
             ]
             effects = SetStealth value = Value + 40
+
+        EffectsGroup
+            scope = And [
+                    Object id = Source.PlanetID
+                    Planet
+            ]
+            effects = [
+                SetMaxShield value = Value + 60000
+                SetMaxDefense value = Value + [[EXPERIMENTOR_SPAWN_START_TURN]]
+                SetMaxTroops value = Value + 300
+                SetDetection value = Value + 100
+            ]
+        EffectsGroup
+            scope = And [
+                    Object id = Source.PlanetID
+                    Planet
+            ]
+            activation = Or [
+                Turn high = [[EXPERIMENTOR_SPAWN_START_TURN]]      // always remove lanes before spawn start turn
+                Not ContainedBy Contains And [ Ship OwnedBy affiliation = AnyEmpire ]
+            ]
+            effects = [
+                // Regeneration
+                SetDefense value = Value + 10
+                SetShield value = Value + 50
+            ]
 
         EffectsGroup
             scope = And [
@@ -1645,16 +1736,16 @@ BuildingType
         EffectsGroup
             scope = Source
             activation = Or [
-                Not ContainedBy Contains And [ Monster Unowned ]
                 Turn high = [[EXPERIMENTOR_SPAWN_START_TURN]]      // always remove lanes before spawn start turn
+                Not ContainedBy Contains And [ Monster Unowned Armed]
             ]
             effects = RemoveStarlanes endpoint = WithinStarlaneJumps jumps = 1 condition = Source
 
         EffectsGroup
             scope = Source
             activation = And [
-                ContainedBy Contains And [ Monster Unowned ]
                 Turn low = [[EXPERIMENTOR_SPAWN_START_TURN]]       // don't create lanes before spawn start turn
+                ContainedBy Contains And [ Monster Unowned Armed]
             ]
             effects = AddStarlanes endpoint = NumberOf number = 1 condition = And [
                 WithinDistance distance = 100 condition = Source
@@ -1671,8 +1762,6 @@ BuildingType
                 CreateShip designname = "SM_BLACK_KRAKEN" empire = Source.Owner
                 CreateShip designname = "SM_BLACK_KRAKEN" empire = Source.Owner
                 CreateShip designname = "SM_BLACK_KRAKEN" empire = Source.Owner
-                CreateShip designname = "SM_BLACK_KRAKEN" empire = Source.Owner
-                CreateShip designname = "SM_BLACK_KRAKEN" empire = Source.Owner
                 GenerateSitRepMessage
                     message = "EFFECT_EXPERIMENT_MONSTERS_LAUNCH"
                     icon = "icons/specials_huge/ancient_ruins.png"
@@ -1680,14 +1769,14 @@ BuildingType
                         tag = "planet" data = Source.SystemID
                         tag = "predefinedshipdesign" data = "SM_BLACK_KRAKEN"
                         tag = "species" data = "SP_EXPERIMENTOR"
-                        tag = "rawtext" data = "5"
+                        tag = "rawtext" data = "3"
                     ]
             ]
 
         EffectsGroup
             scope = Source
             activation = And [
-                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 35) high = [[IMPOSSIBLY_LARGE_TURN]]
+                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 36)
                 Random probability = (0.1 * [[EXPERIMENTOR_MONSTER_FREQ_FACTOR]] )
             ]
             effects = [
@@ -1707,12 +1796,10 @@ BuildingType
         EffectsGroup
             scope = Source
             activation = And [
-                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 30) high = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 70)
+                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 36) high = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 70)
                 Random probability = (0.2 * [[EXPERIMENTOR_MONSTER_FREQ_FACTOR]] )
             ]
             effects = [
-                CreateShip designname = "SM_BLOATED_JUGGERNAUT" empire = Source.Owner
-                CreateShip designname = "SM_BLOATED_JUGGERNAUT" empire = Source.Owner
                 CreateShip designname = "SM_BLOATED_JUGGERNAUT" empire = Source.Owner
                 CreateShip designname = "SM_BLOATED_JUGGERNAUT" empire = Source.Owner
                 CreateShip designname = "SM_BLOATED_JUGGERNAUT" empire = Source.Owner
@@ -1723,14 +1810,14 @@ BuildingType
                         tag = "planet" data = Source.SystemID
                         tag = "predefinedshipdesign" data = "SM_BLOATED_JUGGERNAUT"
                         tag = "species" data = "SP_EXPERIMENTOR"
-                        tag = "rawtext" data = "5"
+                        tag = "rawtext" data = "3"
                     ]
             ]
 
         EffectsGroup
             scope = Source
             activation = And [
-                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 70) high = [[IMPOSSIBLY_LARGE_TURN]]
+                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 71)
                 Random probability = (0.1 * [[EXPERIMENTOR_MONSTER_FREQ_FACTOR]] )
             ]
             effects = [
@@ -1750,12 +1837,10 @@ BuildingType
         EffectsGroup
             scope = Source
             activation = And [
-                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 65) high = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 90)
+                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 71) high = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 130)
                 Random probability = (0.2 * [[EXPERIMENTOR_MONSTER_FREQ_FACTOR]] )
             ]
             effects = [
-                CreateShip designname = "SM_PSIONIC_SNOWFLAKE" empire = Source.Owner
-                CreateShip designname = "SM_PSIONIC_SNOWFLAKE" empire = Source.Owner
                 CreateShip designname = "SM_PSIONIC_SNOWFLAKE" empire = Source.Owner
                 CreateShip designname = "SM_PSIONIC_SNOWFLAKE" empire = Source.Owner
                 CreateShip designname = "SM_PSIONIC_SNOWFLAKE" empire = Source.Owner
@@ -1766,14 +1851,14 @@ BuildingType
                         tag = "planet" data = Source.SystemID
                         tag = "predefinedshipdesign" data = "SM_PSIONIC_SNOWFLAKE"
                         tag = "species" data = "SP_EXPERIMENTOR"
-                        tag = "rawtext" data = "5"
+                        tag = "rawtext" data = "3"
                     ]
             ]
 
         EffectsGroup
             scope = Source
             activation = And [
-                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 130) high = [[IMPOSSIBLY_LARGE_TURN]]
+                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 131)
                 Random probability = (0.1 * [[EXPERIMENTOR_MONSTER_FREQ_FACTOR]] )
             ]
             effects = [
@@ -1793,12 +1878,10 @@ BuildingType
         EffectsGroup
             scope = Source
             activation = And [
-                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 110) high = [[IMPOSSIBLY_LARGE_TURN]]
+                Turn low = ( [[EXPERIMENTOR_SPAWN_START_TURN]] + 131)
                 Random probability = (0.2 * [[EXPERIMENTOR_MONSTER_FREQ_FACTOR]] )
             ]
             effects = [
-                CreateShip designname = "SM_COSMIC_DRAGON" empire = Source.Owner
-                CreateShip designname = "SM_COSMIC_DRAGON" empire = Source.Owner
                 CreateShip designname = "SM_COSMIC_DRAGON" empire = Source.Owner
                 GenerateSitRepMessage
                     message = "EFFECT_EXPERIMENT_MONSTERS_LAUNCH"
@@ -1807,7 +1890,7 @@ BuildingType
                         tag = "planet" data = Source.SystemID
                         tag = "predefinedshipdesign" data = "SM_COSMIC_DRAGON"
                         tag = "species" data = "SP_EXPERIMENTOR"
-                        tag = "rawtext" data = "3"
+                        tag = "rawtext" data = "1"
                     ]
             ]
     ]

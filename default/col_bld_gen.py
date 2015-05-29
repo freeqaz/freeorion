@@ -12,6 +12,7 @@ species_list = [
     ("SP_EAXAW", "Eaxaw", "icons/species/eaxaw.png"),
     ("SP_EGASSEM", "Egassem", "icons/species/egassem.png"),
     ("SP_ETTY", "Etty", "icons/species/etty.png"),
+    ("SP_FURTHEST", "Furthest", "icons/species/furthest.png"),
     ("SP_GEORGE", "George", "icons/species/george.png"),
     ("SP_GYSACHE", "Gysache", "icons/species/gysache.png"),
     ("SP_HHHOH", "Hhhoh", "icons/species/hhhoh.png"),
@@ -19,8 +20,10 @@ species_list = [
     ("SP_KOBUNTURA", "Kobuntura", "icons/species/intangible-04.png"),
     ("SP_LAENFA", "Laenfa", "icons/species/laenfa.png"),
     ("SP_MUURSH", "Mu Ursh", "icons/species/muursh.png"),
+    ("SP_PHINNERT", "Phinnert", "icons/species/phinnert.png"),
     ("SP_SCYLIOR", "Scylior", "icons/species/scylior.png"),
     ("SP_SETINON", "Setinon", "icons/species/amorphous-02.png"),
+    ("SP_SILEXIAN", "Silexian", "icons/species/robotic-06.png"),
     ("SP_SSLITH", "Sslith", "icons/species/sslith.png"),
     ("SP_TAEGHIRUS", "Tae Ghirus", "icons/species/t-aeghirus.png"),
     ("SP_TRITH", "Trith", "icons/species/trith.png"),
@@ -99,7 +102,7 @@ t_main = string.Template('''BuildingType
             activation = Turn low = Source.CreationTurn + 2
             effects = Destroy
     ]
-    icon = "icons/building/generic_building.png"''')
+    icon = "${graphic}"''')
 
 t_species_condition = string.Template('''ResourceSupplyConnected empire = Source.Owner condition = And [
             Planet
@@ -109,8 +112,8 @@ t_species_condition = string.Template('''ResourceSupplyConnected empire = Source
             Happiness low = 5
         ]''')
 
-t_buildtime = string.Template('''max(5, 1 +
-        min value = JumpsBetween object = Target.SystemID object = LocalCandidate.SystemID
+t_buildtime = string.Template('''max(5.0, 1.0 +
+        (min value = ShortestPath object = Target.SystemID object = LocalCandidate.SystemID
             condition = And [
                 Planet
                 OwnedBy empire = Source.Owner
@@ -119,6 +122,13 @@ t_buildtime = string.Template('''max(5, 1 +
                 Happiness low = 5
                 ResourceSupplyConnected empire = Source.Owner condition = Target
             ]
+        ) / max(60, (max
+                      value = LocalCandidate.speed
+                      condition = And [
+                          Ship
+                          OwnedBy empire = Source.Owner
+                      ]
+               ))
     )''')
 
 

@@ -3,6 +3,12 @@ cmake_policy(VERSION 2.6.4)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_HOME_DIRECTORY}/cmake ${CMAKE_HOME_DIRECTORY}/GG/cmake)
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
+IF(NOT CMAKE_BUILD_TYPE)
+  MESSAGE(STATUS "Setting build type to 'Release' as none was specified.")
+  SET(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  SET_PROPERTY(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+ENDIF(NOT CMAKE_BUILD_TYPE)
 
 ########################################
 # Configuration                        #
@@ -70,24 +76,16 @@ else ()
     message(FATAL_ERROR "Unknown platform type! Your setup is not a supported platform for FreeOrion.")
 endif ()
 
-find_package(Subversion)
-set(FreeOrion_WC_REVISION ???)
-set(FreeOrion_BUILDSYS "CMake")
-if (Subversion_FOUND AND (
-  IS_DIRECTORY "${CMAKE_SOURCE_DIR}/.svn" OR
-  IS_DIRECTORY "${CMAKE_SOURCE_DIR}/../.svn" OR
-  IS_DIRECTORY "${CMAKE_SOURCE_DIR}/../../.svn")
-)
-    Subversion_WC_INFO("${CMAKE_SOURCE_DIR}" FreeOrion)
-endif ()
-configure_file(
-    ${CMAKE_SOURCE_DIR}/util/Version.cpp.in
-    ${CMAKE_BINARY_DIR}/util/Version.cpp
-)
+find_package(PythonInterp REQUIRED)
 
-if("${FreeOrion_WC_REVISION}" STREQUAL "???")
-    set(FreeOrion_WC_REVISION "unknown")
-endif ()
+# To run the version generation every compile we need to deferr the
+# execution to a separate target and the existing python command
+add_custom_target(freeorionversion
+    COMMAND
+    "${CMAKE_SOURCE_DIR}/cmake/make_versioncpp.py"
+    "${CMAKE_SOURCE_DIR}"
+    "CMake"
+)
 
 if (WIN32)
     # Add icon resource file to freeorion.exe
@@ -244,9 +242,8 @@ set (freeorioncommon_SOURCE
     util/SitRepEntry.cpp
     util/StringTable.cpp
     util/VarText.cpp
+    util/Version.cpp
     util/XMLDoc.cpp
-    util/Version.cpp.in
-    ${CMAKE_BINARY_DIR}/util/Version.cpp
 )
 
 if (NOT WIN32)
@@ -259,6 +256,8 @@ add_library(freeorioncommon
     ${freeorioncommon_HEADER}
     ${freeorioncommon_SOURCE}
 )
+
+add_dependencies(freeorioncommon freeorionversion)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set_property(

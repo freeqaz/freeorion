@@ -95,6 +95,7 @@
     (Effects)                                   \
     (EffectsGroup)                              \
     (EffectsGroups)                             \
+    (Else)                                      \
     (Empire)                                    \
     (EmpireMeter)                               \
     (EmpireShipsDestroyed)                      \
@@ -237,6 +238,7 @@
     (Object)                                    \
     (ObjectType)                                \
     (Ocean)                                     \
+    (OneOf)                                     \
     (Opinion)                                   \
     (Or)                                        \
     (Orange)                                    \
@@ -274,6 +276,7 @@
     (PreferredFocus)                            \
     (Prerequisites)                             \
     (PreviousSystemID)                          \
+    (Priority)                                  \
     (Probability)                               \
     (ProducedByEmpire)                          \
     (ProducedByEmpireID)                        \
@@ -347,6 +350,7 @@
     (SetResearch)                               \
     (SetShield)                                 \
     (SetSize)                                   \
+    (SetSpecialCapacity)                        \
     (SetSpecies)                                \
     (SetSpeciesOpinion)                         \
     (SetSpeed)                                  \
@@ -376,6 +380,7 @@
     (ShipPartMeter)                             \
     (Ships)                                     \
     (Short_Description)                         \
+    (ShortestPath)                              \
     (ShortRange)                                \
     (Sin)                                       \
     (Size)                                      \
